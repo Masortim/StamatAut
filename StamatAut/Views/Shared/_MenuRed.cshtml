@@ -1,0 +1,1258 @@
+﻿@*Весь код - это раскрытие главного меню редактирования БД*@
+@*То, что должно получаться приклике на пункты меню: Сорта - Средства защиты - Удобрения - Техника - Сельтхозмашины - Агрегаты*@
+@model StamatAut.Models.Redaktor.UserModel
+@{
+    ViewBag.Title = "_MenuRed";
+    <script src="@Url.Content("~/Scripts/hidden.text.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/myscriptIndexRedaktor.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" /> // Добавлено по аналогии с IndexTechnologiesCalculations
+    <script src="@Url.Content("~/Scripts/myscriptIndexTehnologiesFarm.js")" type="text/javascript"></script> // Добавлено по аналогии с IndexTechnologiesCalculations
+}
+<div class="textClass">
+    @{string colourchange = "";}
+    <table>
+        @switch (Model.CurrentLink)
+        {
+            case "Culture":
+                {
+                    <tr>
+                        @*Шапка таблицы "Сорта"*@
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Норма высева, млн/га")</td>
+                        <td>@Html.Label("Масса 1000 зерен, г")</td>
+                        <td>@Html.Label("Количество семян на га, кг")</td>
+                        <td>@Html.Label("Средняя урожайность, ц/га")</td>
+                        <td>@Html.Label("Максимальная урожайность, ц/га")</td>
+                        <td>@Html.Label("Вегетационный период (начало), дни")</td>
+                        <td>@Html.Label("Вегетационный период (конец), дни")</td>
+                        <td><b>@Html.Label("Культура")</b></td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickSort">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Поля добавления новой записи в БД Сорта
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickSort">
+                            <tr>
+                                <td><input type="text" name="Name" value="" size="18" required /></td>
+                                <td><input type="text" name="SR" value="" size="4" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="M1000" value="" size="6" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="CSonGa" value="" size="6" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="Product" value="" size="8" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="ProductMax" value="" size="8" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="GS0" value="" size="8" required pattern="[0-9]{1,3}" title="[Целое трёх-, двух- или однозначное число]" /></td>
+                                <td><input type="text" name="GS1" value="" size="8" required pattern="[0-9]{1,3}" title="[Целое трёх-, двух- или однозначное число]" /></td>
+                                <td>
+                                    <select name="TypeSort">
+                                        @foreach (var t in Model.TypeSorte)
+                                        {
+                                            <option>@t</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td width="150">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Culture.Count(); i++) // Поля редактирования записи в БД Сорта
+                    {
+                        var v = Model.Culture[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickSort">
+                                <input type="hidden" name="Id" value="@v.Id" />
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" size="18" required /></td>
+                                    <td><input type="text" name="SR" value="@v.SeedingRase" size="4" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="M1000" value="@v.M1000" size="6" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="CSonGa" value="@v.CountSeedOnGa" size="6" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="Product" value="@v.Productivity" size="8" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="ProductMax" value="@v.ProductivityMax" size="8" required pattern="\d+([,\.]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="GS0" value="@v.GrowingSeason_0" size="8" required pattern="[0-9]{1,3}" title="[Целое трёх-, двух- или однозначное число]" /></td>
+                                    <td><input type="text" name="GS1" value="@v.GrowingSeason_1" size="8" required pattern="[0-9]{1,3}" title="[Целое трёх-, двух- или однозначное число]" /></td>
+                                    <td>
+                                        <select name="TypeSort">
+                                            @foreach (var t in Model.TypeSorte)
+                                            {
+                                                if (t == Model.Tsorte[i])
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickSort">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.SeedingRase.ToString())</td>
+                                    <td>@Html.Label(v.M1000.ToString())</td>
+                                    <td>@Html.Label(v.CountSeedOnGa.ToString())</td>
+                                    <td>@Html.Label(v.Productivity.ToString())</td>
+                                    <td>@Html.Label(v.ProductivityMax.ToString())</td>
+                                    <td>@Html.Label(v.GrowingSeason_0.ToString())</td>
+                                    <td>@Html.Label(v.GrowingSeason_1.ToString())</td>
+                                    <td>@Html.Label(Model.Tsorte[i])</td>
+                                    <td width="150">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Machinery":
+                {
+                    <tr>
+                        @*Шапка таблицы "Техника"*@
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Тип техники")</td>
+                        <td>@Html.Label("Балансовая стоимость,тыс руб")</td>
+                        <td>@Html.Label("Производитель")</td>
+                        <td>@Html.Label("Серийный номер")</td>
+                        <td>@Html.Label("Нормативная годовая загрузка,ч")</td>
+                        <td>@Html.Label("Процент амортизации на ТО,%")</td>
+                        <td>@Html.Label("Процент амортизации,%")</td>
+                        <td>@Html.Label("Класс техники")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickMachinery">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Добавление новой записи в таблицу Machinery
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickMachinery">
+
+                            <tr>
+                                <td>
+                                    <datalist id="InputMachineName">
+                                        @foreach (var t in Model.ClassMachineName)
+                                        {
+                                            <option value="@t.Name"></option>
+                                        }
+                                    </datalist>
+                                    <input type="text" name="Name" value="" list="InputMachineName" size="18" id="Name" onchange="GetIdM()" required />
+                                </td>
+                                <td>
+                                    <select name="Type" required>
+                                        <option></option>
+                                        @foreach (var t in Model.TypeMachine)
+                                        {
+                                            <option>@t</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="text" name="Price" value="" size="18" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td>
+                                    <select name="Kind" required>
+                                        <option></option>
+                                        @foreach (var t in Model.KindMachine)
+                                        {
+                                            <option>@t</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="text" name="Serial" value="" size="11" required /></td>
+                                <td><input type="text" name="Cargo" value="" size="8" required /></td>
+                                <td><input type="text" name="AmortTO" value="" size="8" required pattern="\d+([,]\d{0,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td><input type="text" name="Amort" value="" size="8" required pattern="\d+([,]\d{0,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td>
+                                    <select name="Class" id="Class" required>
+                                        <option></option>
+                                        @foreach (var t in Model.ClassMachine)
+                                        {
+                                            <option>@t</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                                @*Определение IdM при добавлении новой записи*@
+                                @*IdM забирается из скрипта по id поля input*@
+                                <td><input type="hidden" name="IdM" id="IdM" value="@Model.IdM" /></td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Machine.Count(); i++) // Вывод записей из БД на страницу
+                    {
+                        var v = Model.Machine[i];
+                        var w = Model.ClassMachineName.First(c => c.Name == v.Name);
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMachinery">
+                                <tr>
+                                    @*Редактирование записи БД Техника*@
+                                    <td>
+                                        <datalist id="InputMachineName">
+                                            @foreach (var t in Model.ClassMachineName)
+                                            {
+                                                <option value="@t.Name"></option>
+                                            }
+                                        </datalist>
+                                        <input type="text" name="Name" value="@v.Name" list="InputMachineName" size="18" onchange="GetIdM()" required />
+
+                                    </td>
+                                    <td>
+                                        @*Селект для поля Тип Машины*@
+                                        <select name="Type">
+                                            @foreach (var t in Model.TypeMachine)
+                                            {
+                                                if (t == Model.TypeMachine[i])
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="Price" value="@v.Price" size="18" pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td>
+                                        @*Селект для поля Производитель Машины*@
+                                        <select name="Kind">
+                                            @foreach (var t in Model.KindMachine)
+                                            {
+                                                if (t == Model.KindMachine[i])
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="text" name="Serial" value="@v.SerialNumber" size="11" /></td>
+                                    <td><input type="text" name="Cargo" value="@v.NormZagruz" size="8" /></td>
+                                    <td><input type="text" name="AmortTO" value="@v.PersentAmortOfTO" size="8" pattern="\d+([,]\d{0,2})?" title="[Целое число],[до двух цифр]"  /></td>
+                                    <td><input type="text" name="Amort" value="@v.PersentAmort" size="8" pattern="\d+([,]\d{0,2})?" title="[Целое число],[до двух цифр]"  /></td>
+                                    <td>
+                                        @*Селект для поля Класс Машины*@
+                                        <select name="Class" id="Class" required disabled>
+                                            <option></option>
+                                            @foreach (var t in Model.ClassMachine)
+                                            {
+                                                if (t == w.TyagClass.ToString())
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                    <td><input type="hidden" name="IdM" value="@Model.IdM" /></td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMachinery">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <input type="hidden" name="IdM" value="@Model.IdM" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Type)</td>
+                                    <td>@Html.Label(v.Price.ToString())</td>
+                                    <td>@Html.Label(v.Kind)</td>
+                                    <td>@Html.Label(v.SerialNumber.ToString())</td>
+                                    <td>@Html.Label(v.NormZagruz.ToString())</td>
+                                    <td>@Html.Label(v.PersentAmortOfTO.ToString())</td>
+                                    <td>@Html.Label(v.PersentAmort.ToString())</td>
+                                    <td>@Html.Label(w.TyagClass.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Breaking":
+                {
+                    <tr>
+                        @*Шапка таблицы "Поломки"*@
+                        <td>@Html.Label("Серийный номер техники")</td>
+                        <td>@Html.Label("Дата начала периода неисправности")</td>
+                        <td>@Html.Label("Дата окончания периода неисправности")</td>
+                        <td>@Html.Label("Причина поломки")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickBreaking">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Добавление новой записи в таблицу Breaking
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickBreaking">
+
+                            <tr>
+                                <td>
+                                    <select name="Serial" required>
+                                        <option></option>
+                                        @foreach (var t in Model.Machine)
+                                        {
+                                            <option>@t.SerialNumber</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="date" name="BeginDate" value="" size="36" required title="Дата и время начала поломки" /></td>
+                                <td><input type="date" name="EndDate" value="" size="36" required title="Дата и время завершения ремонта" /></td>
+                                <td><input type="text" name="Reason" value="" size="50" required /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Crash.Count(); i++) // Вывод записей из БД на страницу
+                    {
+                        var v = Model.Crash[i];
+                        var w = Model.Machine.First(c => c.SerialNumber == v.Serial);
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickBreaking">
+                                <tr>
+                                    @*Редактирование записи БД Поломки*@
+                                    <td>
+                                        @*Селект для поля Сериный номер техники*@
+                                        <select name="Serial">
+                                            @foreach (var t in Model.Machine)
+                                            {
+                                                if (t == Model.Machine[i])
+                                                {
+                                                    <option selected>@t.SerialNumber</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t.SerialNumber</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="date" name="Begin" value="@v.BeginDate.ToString("yyyy-MM-dd")" size="36" title="Дата начала поломки" /></td>
+                                    <td><input type="date" name="End" value="@v.EndDate.ToString("yyyy-MM-dd")" size="36" title="Дата завершения ремонта" /></td>
+                                    <td><input type="text" name="Reason" value="@v.Reason" size="50" required patern="^[0-9А-Яа-яЁё\s]+$" /></td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickBreaking">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Serial)</td>
+                                    <td>@Html.Label(v.BeginDate.ToString("dd-MM-yyyy"))</td>
+                                    <td>@Html.Label(v.EndDate.ToString("dd-MM-yyyy")) </td>
+                                    <td>@Html.Label(v.Reason)</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "StakeMech":
+                {
+                    <tr>
+                        @*Шапка таблицы "Ставки механизаторов"*@
+                        <td>@Html.Label("Ставка, руб")</td>
+                        <td>@Html.Label("Разряд механизатора")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickStakeMech">
+                                @if (Model.MechStakes.Count < 7)
+                                {<input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />}
+                                else
+                                {<input type="submit" class="addTkrBtn" name="Action" value="Add" title="Ставки всех разрядов уже добавлены. Отредактируйте существующую запись!" disabled />}
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Добавление новой записи в таблицу StakesOfMech
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickStakeMech">
+
+                            <tr>
+                                <td><input type="text" name="Stake" value="" size="50" required pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td>
+                                    <select name="Rank" required>
+                                        <option></option>
+                                        @foreach (var t in Model.Rank)
+                                        {
+                                            if (Model.MechStakes.FirstOrDefault(c => c.Rank.ToString() == t) == null)
+                                            {
+                                                <option>@t</option>}
+                                        }
+                                    </select>
+                                </td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.MechStakes.Count(); i++) // Вывод записей из БД на страницу
+                    {
+                        var v = Model.MechStakes[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickStakeMech">
+                                <tr>
+                                    @*Редактирование записи БД Ставки Механизаторов*@
+                                    <td><input type="text" name="Reason" value="@v.Stake" size="50" required pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                    <td>
+                                        @*Селект для поля Сериный номер техники*@
+                                        <select name="Serial">
+                                            @foreach (var t in Model.Rank)
+                                            {
+                                                if (t == Model.Rank[i])
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+
+
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickStakeMech">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Stake.ToString())</td>
+                                    <td>@Html.Label(v.Rank.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Mechanics":
+                {
+                    <tr>
+                        @*Шапка таблицы "Механизаторы"*@
+                        <td>@Html.Label("Фамилия, Имя, Отчество")</td>
+                        <td>@Html.Label("Класс техники")</td>
+                        <td>@Html.Label("Ставка / Разряд")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickMech">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Добавление новой записи в таблицу Mechanizator
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickMech">
+
+                            <tr>
+                                <td><input type="text" name="Name" value="" size="50" required pattern="[А-Яа-я]*?\s[А-Яа-я]*?\s[А-Яа-я]*" title="ФИО через пробел" /></td>
+                                <td>
+                                    <select name="Class" required>
+                                        <option></option>
+                                        @foreach (var t in Model.ClassMachine)
+                                        {
+                                            <option>@t</option>}
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="Rank" required>
+                                        <option></option>
+                                        @foreach (var t in Model.MechStakes)
+                                        {
+                                            <option>@t.Rank.ToString()</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Mechanic.Count(); i++) // Вывод записей из БД Механизатор на страницу
+                    {
+                        var v = Model.Mechanic[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMech">
+                                <tr>
+                                    @*Редактирование записи БД Механизатор*@
+                                    <td><input type="text" name="Name" value="@v.Name" size="50" required pattern="[А-Яа-я]*?\s[А-Яа-я]*?\s[А-Яа-я]*" title="ФИО через пробел" /></td>
+                                    <td>
+                                        @*Селект для поля Класс Механизатора*@
+                                        <select name="Class" required>
+                                            @foreach (var t in Model.ClassMachine)
+                                            {
+                                                if (t == v.Class)
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        @*Селект для поля Ставка Механизатора*@
+                                        <select name="Rank" required>
+                                            @foreach (var t in Model.MechStakes)
+                                            {
+                                                if (t.Rank == v.Rank)
+                                                {
+                                                    <option selected>@t.Rank</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t.Rank</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMech">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Class)</td>
+                                    <td>@Html.Label(v.Rank.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Medicine":
+                {
+                    <tr>
+                        @*Шапка таблицы "Больничные листы"*@
+                        <td>@Html.Label("ФИО Механизатора")</td>
+                        <td>@Html.Label("Дата начала болезни ")</td>
+                        <td>@Html.Label("Дата окончания болезни")</td>
+                        <td>@Html.Label("Причина больничного")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickMedic">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // Добавление новой записи в таблицу SickList
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickMedic">
+
+                            <tr>
+                                <td>
+                                    <select name="Name" required>
+                                        <option></option>
+                                        @foreach (var t in Model.Mechanic)
+                                        {
+                                            <option>@t.Name</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="date" name="BeginDate" value="" size="36" required title="Дата начала болезни" /></td>
+                                <td><input type="date" name="EndDate" value="" size="36" required title="Дата окончания болезни" /></td>
+                                <td><input type="text" name="Reason" value="" size="50" required /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.MedicList.Count(); i++) // Вывод записей из БД на страницу
+                    {
+                        var v = Model.MedicList[i];
+                        var w = Model.Mechanic.First(c => c.Name == v.Name);
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMedic">
+                                <tr>
+                                    @*Редактирование записи БД Больничные листы*@
+                                    <td>
+                                        @*Селект для поля Имя Механизатора*@
+                                        <select name="Name">
+                                            @foreach (var t in Model.Mechanic)
+                                            {
+                                                if (t == Model.Mechanic[i])
+                                                {
+                                                    <option selected>@t.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="date" name="Begin" value="@v.BeginDate.ToString("yyyy-MM-dd")" size="36" title="Дата начала болезни" /></td>
+                                    <td><input type="date" name="End" value="@v.EndDate.ToString("yyyy-MM-dd")" size="36" title="Дата окончания болезни" /></td>
+                                    <td><input type="text" name="Reason" value="@v.Reason" size="50" required patern="^[0-9А-Яа-яЁё\s]+$" /></td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickMedic">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.BeginDate.ToString("dd-MM-yyyy"))</td>
+                                    <td>@Html.Label(v.EndDate.ToString("dd-MM-yyyy")) </td>
+                                    <td>@Html.Label(v.Reason)</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+
+
+            case "Trailers": //Код этого кейса скопирован с Machinery и переделан под Trailers
+                {
+                    <tr>
+                        @*Шапка таблицы "Сельхозмашины" - 6 полей*@
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Балансовая стоимость,тыс руб")</td>
+                        <td>@Html.Label("Нормативная годовая загрузка,ч")</td>
+                        <td>@Html.Label("Процент амортизации на ТО,%")</td>
+                        <td>@Html.Label("Процент амортизации,%")</td>
+                        <td>@Html.Label("Количество")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickTrailers">
+                                @*Ссылка на кнопку для Сельхозмашин, её код - в RedaktorController.cs*@
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // @*Добавление записи в БД Сельхозмашины - 6 полей*@
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickTrailers">
+                            @*Ссылка на кнопку для Сельхозмашин, её код - в RedaktorController.cs*@
+                            <tr>
+                                <td><input type="text" name="Name" value="" size="18" required /></td>
+                                <td><input type="text" name="Price" value="" size="18" required pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                <td><input type="text" name="Cargo" value="" size="8" required /></td>
+                                <td><input type="text" name="AmortTO" value="" size="8" required pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td><input type="text" name="Amort" value="" size="8" required pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td><input type="text" name="Quantity" value="" size="8" required pattern="[123456789]{1}\d{0,3}" title="[Целое число больше нуля]" /></td>
+                                <td></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Trailers.Count(); i++) //@*Ссылка на переменную Trailer, заявленную в ДВУХ!!! функциях в UserModel.cs. *@
+                    {
+                        var v = Model.Trailers[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickTrailers">
+                                @*Ссылка на кнопку для Сельхозмашин, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Редактирование записи БД Сельхозмашины - 6 явных полей*@
+                                    <td>@v.Name</td>
+                                    <td><input type="text" name="Price" value="@v.Price" size="18" pattern="\d+([,]\d{1,3})?" title="[Целое число],[до трёх цифр]" /></td>
+                                    <td><input type="text" name="Cargo" value="@v.NormZagruz" size="8" /></td>
+                                    <td><input type="text" name="AmortTO" value="@v.PersentAmortOfTO" size="8" pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                    <td><input type="text" name="Amort" value="@v.PersentAmort" size="8" pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                    <td><input type="text" name="Quantity" value="@v.Quantity" size="11" pattern="[123456789]{1}\d{0,3}" title="[Целое число больше нуля]" /></td>
+                                    <td><input type="hidden" name="Name" value="@v.Name" /></td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickTrailers">
+                                @*Ссылка на кнопку для Сельхозмашин, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Выдача строки данных на страницу, видимую пользователем - 6 явных переменных*@
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Price.ToString())</td>
+                                    <td>@Html.Label(v.NormZagruz.ToString())</td>
+                                    <td>@Html.Label(v.PersentAmortOfTO.ToString())</td>
+                                    <td>@Html.Label(v.PersentAmort.ToString())</td>
+                                    <td>@Html.Label(v.Quantity.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Agregates": //Код этого кейса скопирован с Trailers и переделан под Agregates
+                {
+                    <tr>
+                        @*Шапка таблицы "Агрегаты" - 6 заголовков. Это просто текст*@
+                        <td>@Html.Label("Наименование агрегата")</td>
+                        <td>@Html.Label("Наименование техники")</td> @*Из базы значений, как на Machinery*@
+                        <td>@Html.Label("Тип топлива")</td> @*Из базы KindOfFuel (тип топлива) все варианты Name*@
+                        <td>@Html.Label("Сельхозмашина")</td> @*Из базы Machinery - все варианты Name*@
+                        <td>@Html.Label("Количество сельхозмашин")</td>
+                        <td>@Html.Label("Ширина захвата,м")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickAgregates">
+                                @*Ссылка на кнопку добавления Агрегата, её код - в RedaktorController.cs*@
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // @*Добавление записи в БД Агрегаты - 5 полей, т.к. название формируется автоматически*@
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickAgregates">
+                            @*Ссылка на кнопку для Агрегатов, её код - в RedaktorController.cs*@
+                            <tr>
+                                <td><input type="text" name="Name" id="Name" value="" size="18" disabled required /></td>
+                                <td>
+                                    <select name="Class" id="Class" onchange="FormAgregateName()" title="Заполните это поле или поле «Сельхозмашина»">
+                                        <option></option>
+                                        @foreach (var t in Model.ClassMachineNameFarm)
+                                        {
+                                            <option value="@t">@t</option>// value - для передачи в функцию кнопки, внутри option - для отображения
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="Fuel" id="Fuel" required>
+                                        <option></option>
+                                        @foreach (var t in Model.FuelNameFarm)
+                                        {
+                                            <option value="@t">@t</option>// value - для передачи в функцию кнопки, внутри option - для отображения
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="Trailer" id="Trailer" onchange="FormAgregateName()" title="Заполните это поле или поле «Наименование техники»">
+                                        <option></option>
+                                        @foreach (var t in Model.Trailers)
+                                        {
+                                            <option value="@t.Name">@t.Name</option>// value - для передачи в функцию кнопки, внутри option - для отображения
+                                        }
+                                    </select>
+                                </td>
+                                <td><input type="number" name="Quantity" id="Quantity" value="" size="26" required min="1" step="1" title="[Целое число]" /></td>
+                                <td><input type="text" name="Shirina" value="" size="16" required pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td>
+                                <td></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <div class="main inline">
+                                        <div class="ColAll">
+                                            <div class="demo">
+                                                <fieldset>
+                                                    <legend>Назначьте операции для данного агрегата:</legend>
+                                                    @for (int ii = 0; ii < Model.TechOperations.Count; ii++)
+                                                    {
+                                                        var w = Model.TechOperations[ii];
+                                                        <input class="hide" id="@w.OperationGroupNameNumber" name="@w.OperationGroupNameNumber" value="@w.OperationGroupNameNumber" type="checkbox">
+                                                        <label style="color: gray;" id="l_@w.OperationGroupNameNumber" for="@w.OperationGroupNameNumber">@w.OperationGroupName</label>
+                                                        <div>
+                                                            @for (int j = 0; j < w.OperationSubGroupNames.Count(); j++)
+                                                            {
+                                                                <input class="hide" id="@w.OperationSubGroupNumbers[j]" type="checkbox">
+                                                                <label style="color: gray;" id="l_@w.OperationSubGroupNumbers[j]" for="@w.OperationSubGroupNumbers[j]">@w.OperationSubGroupNames[j]</label>
+                                                                for (int k = 0; k < Model.OperationLists.Count; k++)
+                                                                {
+                                                                    var u = Model.OperationLists[k];
+                                                                    if (u.OperationGroupName == w.OperationGroupNameNumber && u.OperationGroupNameNumber == w.OperationSubGroupNumbers[j])
+                                                                    {
+                                                                        <div>
+                                                                            <table>
+                                                                                @for (int l = 0; l < u.OperationSubGroupNames.Count; l++)
+                                                                                {
+                                                                                    string superindex = w.OperationGroupNameNumber + "-" + w.OperationSubGroupNumbers[j] + "-" + u.OperationSubGroupNumbers[l];
+                                                                                    <tr>
+                                                                                        <td><input type="checkbox" id="@superindex" name="AgregateOperation" value="@u.OperationSubGroupNumbers[l]" onclick="FixOperation('@superindex')" /> @u.OperationSubGroupNames[l] &nbsp &nbsp &nbsp   </td>
+                                                                                        <td>
+                                                                                            <label hidden id="@superindex-GSML">Затраты ГСМ, руб:</label>
+                                                                                            <input type="hidden" id="@superindex-GSM" name="AgregateOperationGSM" value="" required title="[Целое число],[цифры]" />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <label hidden id="@superindex-SRL">Норма выработки, га в ч: </label>
+                                                                                            <input type="hidden" id="@superindex-SR" name="AgregateOperationNorm" value="" required title="[Целое число],[цифры]" />
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            </table>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                <br>
+                                                            }
+                                                            <br />
+                                                        </div>
+                                                        <br>
+                                                    }
+                                                </fieldset>  @*Конец блока операций агрегатов*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Agregate.Count(); i++) //@*Ссылка на переменную Agregate, заявленную в ДВУХ!!! функциях в UserModel.cs. *@
+                    {
+                        var v = Model.Agregate[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickAgregates">
+                                @*Ссылка на кнопку для Агрегатов, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Редактирование записи БД Агрегаты - 6 явных полей*@
+                                <tr>
+                                    <td><input name="Name" id="Name" value="@v.Name" size="18" required disabled /></td>
+                                    <td>
+                                        <select name="Class" id="Class" value="@v.ClassMachine" onchange="FormAgregateName()" title="Заполните это поле или поле «Сельхозмашина»">
+                                            <option></option>
+                                            @foreach (var t in Model.ClassMachineNameFarm)
+                                            {
+                                                if (t == v.ClassMachine)
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Fuel" id="Fuel" value="@v.Fuel" required>
+                                            @foreach (var t in Model.FuelNameFarm)
+                                            {
+                                                if (t == v.Fuel)
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="Trailer" id="Trailer" value="@v.Trailer" onchange="FormAgregateName()" title="Заполните это поле или поле «Наименование техники»">
+                                            @foreach (var t in Model.TrailerNameFarm)
+                                            {
+                                                if (t == v.Trailer)
+                                                {
+                                                    <option selected>@t</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td><input type="number" name="Quantity" id="Quantity" value="@v.Quantity" size="26" required min="1" step="1" title="[Целое число]" onchange="CorrectQuantity()" data-msg="RRRRRR" /></td> @*Вручную*@
+                                    <td><input type="text" name="Shirina" value="@v.Shirina" size="16" pattern="\d+([,]\d{1,2})?" title="[Целое число],[до двух цифр]" /></td> @*Вручную*@
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                </tr>
+                                <td colspan="8">
+                                    <div class="main inline">
+                                        <div class="ColAll">
+                                            <div class="demo">
+                                                <fieldset>
+                                                    <legend>Назначьте операции для данного агрегата:</legend>
+                                                    @for (int ii = 0; ii < Model.TechOperations.Count; ii++)
+                                                    {
+                                                        var w = Model.TechOperations[ii];
+                                                        <input class="hide" id="@w.OperationGroupNameNumber" name="@w.OperationGroupNameNumber" value="@w.OperationGroupNameNumber" type="checkbox">
+                                                        <label style="color: gray;" id="l_@w.OperationGroupNameNumber" for="@w.OperationGroupNameNumber">@w.OperationGroupName</label>
+                                                        <div>
+                                                            @for (int j = 0; j < w.OperationSubGroupNames.Count(); j++)
+                                                            {
+                                                                <input class="hide" id="@w.OperationSubGroupNumbers[j]" type="checkbox">
+                                                                <label style="color: gray;" id="l_@w.OperationSubGroupNumbers[j]" for="@w.OperationSubGroupNumbers[j]">@w.OperationSubGroupNames[j]</label>
+                                                                for (int k = 0; k < Model.OperationLists.Count; k++)
+                                                                {
+                                                                    var u = Model.OperationLists[k];
+                                                                    if (u.OperationGroupName == w.OperationGroupNameNumber && u.OperationGroupNameNumber == w.OperationSubGroupNumbers[j])
+                                                                    {
+                                                                        <div>
+                                                                            <table>
+                                                                                @for (int l = 0; l < u.OperationSubGroupNames.Count; l++)
+                                                                                {
+                                                                                    string superindex = w.OperationGroupNameNumber + "-" + w.OperationSubGroupNumbers[j] + "-" + u.OperationSubGroupNumbers[l];
+                                                                                    var o = Model.AgregateOperationList.FirstOrDefault(c => c.IdOperation == u.OperationSubGroupNumbers[l]);
+                                                                                    if (o != null)
+                                                                                    {
+                                                                                        colourchange = colourchange + w.OperationGroupNameNumber + "," + w.OperationSubGroupNumbers[j] + ",";
+                                                                                        <tr>
+                                                                                            <td><input type="checkbox" checked id="@superindex" name="AgregateOperation" value="@u.OperationSubGroupNumbers[l]" onclick="FixOperation('@superindex')" /> @u.OperationSubGroupNames[l] &nbsp &nbsp &nbsp   </td>
+                                                                                            <td>
+                                                                                                <label id="@superindex-GSML">Затраты ГСМ, руб:</label>
+                                                                                                <input type="text" id="@superindex-GSM" name="AgregateOperationGSM" value="@o.GSM" required title="[Целое число],[цифры]" />
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <label id="@superindex-SRL">Норма выработки, га в ч: </label>
+                                                                                                <input type="text" id="@superindex-SR" name="AgregateOperationNorm" value="@o.SR" required title="[Целое число],[цифры]" />
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td><input type="checkbox" id="@superindex" name="AgregateOperation" value="@u.OperationSubGroupNumbers[l]" onclick="FixOperation('@superindex')" /> @u.OperationSubGroupNames[l] &nbsp &nbsp &nbsp   </td>
+                                                                                            <td>
+                                                                                                <label hidden id="@superindex-GSML">Затраты ГСМ, руб:</label>
+                                                                                                <input type="hidden" id="@superindex-GSM" name="AgregateOperationGSM" value="" required title="[Целое число],[цифры]" />
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <label hidden id="@superindex-SRL">Норма выработки, га в ч: </label>
+                                                                                                <input type="hidden" id="@superindex-SR" name="AgregateOperationNorm" value="" required title="[Целое число],[цифры]" />
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                }
+                                                                            </table>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                <br>
+                                                            }
+                                                            <br />
+                                                        </div>
+                                                        <br>
+                                                    }
+                                                </fieldset>  @*Конец блока операций агрегатов*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickAgregates">
+                                @*Ссылка на кнопку для Сельхозмашин, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Выдача строки данных на страницу, видимую пользователем - 6 явных переменных*@
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.ClassMachine.ToString())</td>
+                                    <td>@Html.Label(v.Fuel.ToString())</td>
+                                    <td>@Html.Label(v.Trailer.ToString())</td>
+                                    <td>@Html.Label(v.Quantity.ToString())</td>
+                                    <td>@Html.Label(v.Shirina.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Fuels": //Код этого кейса скопирован с Machinery и переделан под Trailers
+                {
+                    <tr>
+                        @*Шапка таблицы "Топливо" - 6 полей*@
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Единица измерения")</td>
+                        <td>@Html.Label("Стоимость,руб")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickFuel">
+                                @*Ссылка на кнопку для Топлива, её код - в RedaktorController.cs*@
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add") // @*Добавление записи в БД Сельхозмашины - 6 полей*@
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickFuel">
+                            @*Ссылка на кнопку для Топлива, её код - в RedaktorController.cs*@
+                            <tr>
+                                <td><input type="text" name="Name" value="" size="18" required /></td>
+                                <td><input type="text" name="Unit" value="" size="8" required /></td>
+                                <td><input type="text" name="Cost" value="" size="8" required pattern="[0-9]+([,\.]\d{1,2})?" title="[0],[до двух цифр]" /></td>
+                                <td></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Fuel.Count(); i++) //@*Ссылка на переменную Fuel, заявленную в ДВУХ!!! функциях в UserModel.cs. *@
+                    {
+                        var v = Model.Fuel[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickFuel">
+                                @*Ссылка на кнопку для Топлива, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Редактирование записи БД Топлива - 3 явных поля, 2 неявных*@
+                                    <td><input type="text" name="Name" value="@v.Name" size="18" required /></td>
+                                    <td><input type="text" name="Unit" value="@v.Unit" size="18" required /></td>
+                                    <td><input type="text" name="Cost" value="@v.Cost" size="8" pattern="[0-9]+([,\.]\d{1,2})?" title="[цифра],[до двух цифр]" /></td>
+                                    <td><input type="hidden" name="Id" value="@v.Id" /></td>
+                                    <td width="150">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" formnovalidate />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickFuel">
+                                @*Ссылка на кнопку для Топлива, её код - в RedaktorController.cs*@
+                                <tr>
+                                    @*Выдача строки данных на страницу, видимую пользователем - 3 явных переменных*@
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Unit)</td>
+                                    <td>@Html.Label(v.Cost.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+
+
+            case "Fertilizer":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Действующее вещество")</td>
+                        <td>@Html.Label("Единица измерения")</td>
+                        <td>@Html.Label("Содержание препарата")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickFertilizer">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickFertilizer">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="Reactant" value="" /></td>
+                                <td><input type="text" name="ContentOfPrep" value="" /></td>
+                                <td><input type="text" name="Unit" value="" /></td>
+                                <td width="90">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Fertilizer)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickFertilizer">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <td><input type="text" name="Reactant" value="@v.Reactant" /></td>
+                                    <td><input type="text" name="ContentOfPrep" value="@v.ContentOfPrep" /></td>
+                                    <td><input type="text" name="Unit" value="@v.Unit" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="90">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickFertilizer">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Reactant)</td>
+                                    <td>@Html.Label(v.ContentOfPrep)</td>
+                                    <td>@Html.Label(v.Unit)</td>
+                                    <td width="90">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Chemical":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Единица измерения")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickChemical">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickChemical">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="Unit" value="" /></td>
+                                <td width="90">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Him)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickChemical">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <td><input type="text" name="Unit" value="@v.Unit" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="90">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickChemical">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Unit)</td>
+                                    <td width="90">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+
+        }
+
+    </table>
+    <input type="hidden" class="aaaaa" value="@colourchange" />
+</div>

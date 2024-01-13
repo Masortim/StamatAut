@@ -1,0 +1,52 @@
+﻿@*@model Stamat.Models.Redaktor.CultureModel
+    @using GridMvc.Html*@
+
+@{
+    ViewBag.Title = "Culture";
+    <script>
+        function calc() {
+            //alert('calc');
+            $('table tr').click(function () {
+                var $row = this;
+                var $td = $(this).find("td");
+                $('#NameCult').val($td[0].innerHTML);
+                $('#Norm').val($td[1].innerHTML);
+                $('#Mass').val($td[2].innerHTML);
+                $('#Col').val($td[3].innerHTML);
+            });
+        }
+    </script>
+}
+
+<div id="usual1" class="usual" style="overflow:hidden;">
+    @using (Html.BeginForm("Culture", "Redaktor"@*, FormMethod.Post*@))
+{
+<fieldset style="border: 0px; margin-left: 5px; width: 100%;">
+    <form>
+        @* <input type="hidden" name="FarmName" value="@Model.FarmName" />*@
+        <input type="hidden" name="NameCult" id="NameCult" value="" />
+        <input type="hidden" name="Norm" id="Norm" value="" />
+        <input type="hidden" name="Mass" id="Mass" value="" />
+        <input type="hidden" name="Col" id="Col" value="" />
+        <input type="submit" class="AddTKR" name="Action" value="AddCult" title="Добавить" />
+        <input type="submit" class="EditTKR" name="Action" value="EditCult" title="Редактировать" />
+        <input type="submit" class="DelTKR" name="Action" value="DelCult" title="Удалить" />
+
+        @*  <div class="textClass2" style="height:500px; width:660px;">
+                                             @Html.Grid(Model.Cltrs).Columns(columns =>
+            {
+              columns.Add(p => p.Name).Titled("Культура").Sortable(true);
+               columns.Add(p => p.Norm).Titled("Норма высева, млн/га");
+               columns.Add(p => p.Mass).Titled("Масса 1000 зерен, г");
+               columns.Add(p => p.CountSeeds).Titled("Количество семян на га, кг");
+
+                                        </div>*@
+    </form>
+</fieldset>
+
+}
+</div>
+
+<script type="text/javascript">
+    calc()
+</script>

@@ -1,0 +1,103 @@
+﻿@model StamatAut.Models.Tehnics.TechnicsModel
+@{
+    ViewBag.Title = "SelectTechnics";
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.js")">
+</ script >
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></ script >
+    <script src="@Url.Content("~/Scripts/myscriptIndexTehnologiesFarm.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-more.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-more.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-all.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-3d.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-3d.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.json-2.2.min.js")" type="text/javascript"></script>
+}
+    <div class="textClass">
+
+        @switch (Model.CurrentLink)
+        {
+            case "Econom":
+                {
+                    @(Model.ChartEconom)
+                }
+                break;
+            case "Result":
+                {
+                    <h2>Для выбранного варианта техологии требуется техники:</h2>
+                    foreach (var m in Model.CountM)
+                    {
+                        if (m.Key != "-")
+                        { <p>@m.Key: @m.Value</p>}
+                    }
+                        <h2>а также сельскохозяйственных машин:</h2>
+                    foreach (var t in Model.CountT)
+                    {
+                        if (t.Key != "-")
+                        { <p>@t.Key: @t.Value</p>}
+                    }
+                }
+                break;
+            case "Result2":
+                {                    
+                    foreach (var v in Model.TKR)
+                    {
+                        <table style="border-collapse: collapse">
+                            <caption style="font: 14px; font-weight: bold;">@v.Value</caption>
+                            <tr style="border: 1px solid grey;">
+                                <th style="border:  2px solid; ">Технологическая операция</th>
+                                <th style="border:  2px solid; ">Объем работ</th>
+                                <th style="border:  2px solid;">Дата начала</th>
+                                <th style="border:  2px solid; ">Дата окончания</th>
+                                <th style="border:  2px solid; ">Кол-во дней</th>
+                                <th style="border:  2px solid;  ">Состав агрегата</th>
+                                <th style="border:  2px solid;">количество</th>
+                                <th style="border:  2px solid;">Затраты на заработную плату</th>
+                                <th style="border:  2px solid;">Затраты на ГСМ</th>
+                                <th style="border:  2px solid;">Затраты на ТО и ремонт</th>
+                                <th style="border:  2px solid; ">Затраты на Амортизацию</th>
+                                <th style="border:  2px solid;">Затраты всего</th>
+                            </tr>
+                            @foreach (var r in Model.Raspis.Where(p => p.IdTKR == v.Key).ToList())
+                            {
+                                <tr>
+                                    <td style="border: 2px solid grey;">@r.NameTO</td>
+                                    <td style="border: 2px solid grey;">@{var square = r.NameTO.Contains("Обкос") ? r.Square*0.1f : r.Square;}@square</td>
+                                    <td style="border: 2px solid grey;">@r.DateB</td>
+                                    <td style="border: 2px solid grey;">@r.DateE</td>
+                                    <td style="border: 2px solid grey;">@r.KolDays</td>
+                                    <td style="border: 2px solid grey;">@r.Agregate.Name</td>
+                                    <td style="border: 2px solid grey;">@r.Agregate.Count</td>
+                                    <td style="border: 2px solid grey;">@r.Agregate.EconomZarPl</td>
+                                    <td style="border: 2px solid grey;">@r.Agregate.EconomGsm</td>
+                                    <td style="border: 2px solid grey;">@(r.Agregate.EconomToRemM + r.Agregate.EconomToRemT)</td>
+                                    <td style="border: 2px solid grey;">@(r.Agregate.EconomAmortM + r.Agregate.EconomAmortT)</td>
+                                    <td style="border: 2px solid grey;">@r.Agregate.EconomAll</td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                }
+                break;
+            case "Pic":
+                {
+                    @(Model.Pic)
+                }
+                break;
+            case "GantTO":
+                {
+                    @(Model.GantTO)
+                }
+                break;
+        }
+        </br>
+        </br>
+        </br>
+        </br>
+    </div>
+
+
+
+

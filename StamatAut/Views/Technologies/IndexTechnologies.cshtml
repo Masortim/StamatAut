@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "IndexTechnologies";
+}
+<script>
+    function scr() {
+        displ('noscr');
+        displ('scr');
+    };
+    function calc() {
+        $('img').click(function () {
+            var img = this;
+        });
+    };
+    function displ(ddd) {
+        if (document.getElementById(ddd).style.display == 'none') {
+            document.getElementById(ddd).style.display = 'block'
+        }
+        else {
+            document.getElementById(ddd).style.display = 'none'
+        }
+    };
+</script>
+
+<div class="slider">
+    <h1>Подбор технологий</h1>
+    <h2>
+        Определение возможности применения различных технологий из имеющихся в БД базовых технологий исходя из узловий расположения хозяйства
+    </h2>
+    <h3>Порядок работы с разделом:</h3>
+    <h3>Краткая инструкция</h3>
+</div>
+<h2>Подбор технологий</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+
+    <ul>
+        <li>
+            Приветсвуем вас пользователь, скоро здесь будет вся информация
+        </li>
+    </ul>
+    
+
+
+    <script>
+        scr();
+    </script>

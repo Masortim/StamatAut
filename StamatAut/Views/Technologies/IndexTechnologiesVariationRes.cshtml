@@ -1,0 +1,100 @@
+﻿@model StamatAut.Models.Technologies.TechnologiesVariationResModel
+@{
+    ViewBag.Title = "SelectTechnologies";
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/myscriptIndexTehnologiesFarm.js")" type="text/javascript"></script>
+}
+    <div id="t1">
+        <div class="slider">
+            <h1>Подбор технологий</h1>
+            <h2>
+                Определение возможности применения различных технологий из имеющихся в БД базовых технологий исходя из уcловий расположения хозяйства
+            </h2>
+            <h3>Порядок работы с разделом:</h3>
+            <h3>
+                Для просмотра результатов подбора технологий для отдельной технологической карты разверните соответствующий пункт меню.
+                Также можно просмотреть более подробную информацию по технологическим операциям.
+            </h3>
+        </div>
+        <h2>Результаты подбора технологий</h2>
+        <h3 style="text-align:center; display:block;" id="noscr">
+            Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+            Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+        </h3>
+        <div class="main inline">
+            <div class="ColAll">
+                @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+                {                  
+                    <div>
+                        @foreach (string key in Model.GroupVariants.Keys)
+                        {
+                            <table id="tableAdd">
+                                <caption>@key</caption>
+                            </table>
+                            foreach (var val in Model.GroupVariants[key])
+                            {
+                                <table>
+                                    <tr>
+                                        <td>Рабочие участки</td>
+                                        <td>@val.GroupWA</td>
+                                    </tr>
+                                </table>
+                                <div class="demo">
+
+                                    <fieldset>
+                                        <legend>Выберите технологические приемы для включения в технологическию карту</legend>
+                                        <div>
+                                            @for (int i = 0; i < val.TechPaket.TechP[0].Operations.Count(); i++)
+                                            {
+                                                string year = key.Split('/')[0];
+                                                <input type="hidden" name="selectTechPaket" value="@val.IdTKR-@val.GroupWA-@val.TechPaket.TechP[0].Operations[i].IdOperation" />
+                                                <input class="hide" id="@key-@val.GroupWA-@i" type="checkbox">
+                                                <label for="@key-@val.GroupWA-@i">@val.TechPaket.TechP[0].Operations[i].Name</label>
+                                                <div>
+                                                    <table>
+                                                        <tr>
+                                                            <td>Дата начала</td>
+                                                            @{string str = val.IdTKR.ToString() + "-" + val.GroupWA + "-" + i.ToString();}                                                              
+                                                            <td><input type="date" id="start_@val.IdTKR-@val.GroupWA-@i" name="dateB" value="@year-05-22" min="@year-01-01" max="@year-12-31" onchange="dateend('@str')"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Дата окончания</td>
+                                                            <td><input type="date" id="end_@val.IdTKR-@val.GroupWA-@i" name="dateE" value="2022-07-22" min="2018-01-01" max="2022-12-31"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Процент выполнения операции</td>
+                                                            <td><input type="text" name="persentTO" value="100"></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <br />
+                                                <br />
+                                            }
+                                        </div>
+                                        <br />
+                                        <br />
+                                    </fieldset>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div id="okClose">
+                        <input type="submit" class="okBtn" name="Action" value="SaveTehKart" title="Сохранить" />
+                    </div>
+                    <h1 style="height: 20px;"></h1>
+                }
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    scr();
+    function dateend(text) {        
+        var db = $('#start_' + text).val();
+        $('#end_' + text).val(db);
+    };
+</script>
+
+
+

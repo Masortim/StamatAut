@@ -1,0 +1,149 @@
+﻿@model StamatAut.Models.Redaktor.AdminModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "SelectTechnics";
+}
+<script>
+    function scr() {
+        displ('noscr');
+        displ('scr');
+    };
+    function calc() {
+        $('img').click(function () {
+            var img = this;
+        });
+    };
+    function displ(ddd) {
+        if (document.getElementById(ddd).style.display == 'none') {
+            document.getElementById(ddd).style.display = 'block'
+        }
+        else {
+            document.getElementById(ddd).style.display = 'none'
+        }
+    };
+</script>
+<script src="@Url.Content("~/Scripts/jquery.json-2.2.min.js")" type="text/javascript"></script>
+
+<div class="slider">
+    <h1>База данных</h1>
+    <p class="lead">Формирование БД по справочникам</p>
+    <h3>Порядок работы с разделом:</h3>
+    <h3>Для добавления, удаления или редактирования данных выберите необходимый пункт меню</h3>
+</div>
+<h2>Редактор</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+@using (Html.BeginForm("SelectorAdmin", "Redaktor", FormMethod.Post))
+{
+    <div>
+        <div id="header-w">
+            <div id="menucontainer1">
+                <ul id="me">
+                    <input type="hidden" name="CurrentLink" value="@Model.CurrentLink" />
+                    <li id="@(Model.CurrentLink == "Culture" ? "select_this" : "")">
+                        @Html.ActionLink("Культуры", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Culture"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Disease" ? "select_this" : "")">
+                        @Html.ActionLink("Болезни", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Disease"
+                             }), null
+                             )
+                    <li id="@(Model.CurrentLink == "Pest" ? "select_this" : "")">
+                        @Html.ActionLink("Вредители", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Pest"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Stabilily" ? "select_this" : "")">
+                        @Html.ActionLink("Устойчивость", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Stabilily"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Zone" ? "select_this" : "")">
+                        @Html.ActionLink("Климатические зоны", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Climat"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Soil" ? "select_this" : "")">
+                        @Html.ActionLink("Почвы", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Soil"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "TehOp" ? "select_this" : "")">
+                        @Html.ActionLink("Операции", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "TehOp"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "TehPack" ? "select_this" : "")">
+                        @Html.ActionLink("Карты", "SelectorAdmin", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "TehPack"
+                             }), null
+                             )
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @if (Model.CurrentLink != "")
+    {
+        <table>
+            <tr>
+                <td>@Html.Partial("_MenuRedAdmin", Model)</td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</div>
+<form>
+    <div style="position: relative; ">
+        <input style="position: absolute;right: 10px;top: 5px;" type="submit" class="okBtn" name="Action" value="Ok" title="Продолжить" />
+    </div>
+</form>
+
+
+
+<script>
+    scr();
+</script>
+
+

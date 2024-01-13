@@ -1,0 +1,34 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.TechnologiesFarmModels
+@{
+<div id="tag2">
+    @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+    {
+    <fieldset>
+        
+        <table id="tableAdd">
+            <caption>Отметьте рабочие участки, для добавления</caption>
+            <tr>
+                <td>
+                    @foreach (var wa in Model.wAreas)
+                    {
+                        <h4> <input type="checkbox" id="selectWA" name="selectWAraes" value="@wa.Name" />Номер участка: @wa.Name Площадь:  @wa.Square га</h4>
+                    }
+                </td>
+
+
+
+            </tr>
+
+        </table>
+        <div id="okClose">
+            <input type="submit" class="ok" value="_addWAreasToTkr" title="Добавить выбранные рабочие участки" onclick="add('_addWAreasToTkr')" />
+        </div>
+    </fieldset>
+    }
+    </div>
+    }
+
+    <script type="text/javascript">
+            allOff(@Model.countWorkArea, 'tableAdd');
+    </script>

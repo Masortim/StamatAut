@@ -1,0 +1,142 @@
+﻿#thumbs-wrapper {
+    width: 660px;
+    padding: 0 5px;
+    position: absolute;
+    bottom: 10px;
+    right: 0px;
+    overflow: hidden;
+}
+
+    #thumbs-wrapper a#prev {
+        width: 12px;
+        height: 17px;
+        position: absolute;
+        top: 50%;
+        margin-top: -8px;
+        left: 0;
+        background: url(images/left-arr.png) no-repeat 0 0;
+    }
+
+    #thumbs-wrapper a#next {
+        width: 12px;
+        height: 17px;
+        position: absolute;
+        top: 50%;
+        margin-top: -8px;
+        right: 0px;
+        background: url(images/right-arr.png) no-repeat 0 0;
+    }
+
+#thumbs {
+    height: 80px;
+    width: 660px;
+    position: relative;
+    overflow: hidden;
+    padding-top: 7px;
+}
+
+    #thumbs a {
+        margin-bottom: 1px;
+        width: 100px;
+        height: 69px;
+        margin-right: 25px;
+        float: left;
+        background: #fff;
+        padding: 1px;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -o-border-radius: 4px;
+        border: 1px solid #d5d5d5;
+    }
+
+        #thumbs a img {
+            width: 100px;
+            height: 67px;
+            float: left;
+            margin-right: 1px;
+            margin-left: 1px;
+        }
+        #thumbs a img { 
+    margin-bottom:8px; 
+    width: 70px; 
+    height: 49px; 
+    margin-right: 1px; 
+    float:left; 
+    padding: 3px; 
+    border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -o-border-radius: 4px; 
+    border: 1px solid #d5d5d5; 
+
+}
+        #thumbs a.selected {
+            height: 67px;
+            position: relative;
+            margin-top: -3px;
+            opacity: 1;
+        }
+
+            #thumbs a.selected img {
+                height: 67px;
+            }
+
+/* Set padding to keep content from hitting the edges */
+
+.register {
+    background: url(../Content/images/bg3.png);
+    background-size: 50%;
+    position: center;
+    float: inherit;
+    padding: 9px 10px;
+    margin-right: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding-left: 15px;
+}
+
+
+
+#loginForm {
+    background: url(../Content/images/bg1.png);
+    background-size: 100%;
+    position: relative;
+    float: inherit;
+    padding: 9px 10px;
+    margin-right: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding-left: 15px;
+    
+}
+
+
+
+
+
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+/*.dl-horizontal dt {
+    white-space: normal;
+}*/
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}
+#container_demo {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    margin: 0 auto;
+    font-family: "Trebuchet MS","Myriad Pro",Arial,sans-serif;
+}*/

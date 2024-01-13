@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "SelectTechnics";
+}
+<script>
+    function scr() {
+        displ('noscr');
+        displ('scr');
+    };
+    function calc() {
+        $('img').click(function () {
+            var img = this;
+        });
+    };
+    function displ(ddd) {
+        if (document.getElementById(ddd).style.display == 'none') {
+            document.getElementById(ddd).style.display = 'block'
+        }
+        else {
+            document.getElementById(ddd).style.display = 'none'
+        }
+    };
+</script>
+
+<div class="slider">
+    <h1>База данных</h1>
+    <p class="lead">Формирование БД по данным хозяйства</p>
+    <h3>Порядок работы с разделом:</h3>
+    <h3>Для добавления, удаления или редактирования данных выберите необходимый пункт меню</h3>
+</div>
+<h2>Редактор</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+<div id="menu">
+    <h2>Меню</h2>
+    <div class="col last">
+        @Html.Partial("_MenuRedAdmin")
+    </div>
+
+
+
+</div>
+
+
+
+<div id="content">
+
+    <h2>Content</h2>
+    @Html.Partial("Culture")
+</div>
+
+
+<script>
+    scr();
+</script>
+
+

@@ -1,0 +1,36 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.ZonaModels
+<div id="tag3">
+    <h4 style="width: 1200px; text-align: center;">Характеристика зоны</h4>
+    <form>
+        <table>
+            <tr>
+                <td style="width: 600px; text-align: right;">Дата начала вегетационного периода</td>
+                <td style="padding-left:10px;">@Model.Zone.DataBeg</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Дата окончания вегетационного периода</td>
+                <td style="padding-left:10px;">@Model.Zone.DataEnd</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Среднее-многолетние осадки года, мм</td>
+                <td style="padding-left:10px;">@Model.Zone.KolOsS</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Среднее-многолетние осадки июня, мм</td>
+                <td style="padding-left:10px;">@Model.Zone.KolOsadkovJune</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Коеффициент увлажнения</td>
+                <td style="padding-left:10px;">@Model.Zone.KoefUvl</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Средне-многолетние суммы температур выше 5-10 °С, °С</td>
+                <td style="padding-left:10px;">@Model.Zone.SummTempVegPer_5_10</td>
+            </tr>
+            <tr>
+                <td style="width: 600px; text-align: right;">Средне-многолетние суммы температур выше 10-12 °С, °С</td>
+                <td style="padding-left:10px;">@Model.Zone.SummTempVegPer_10_12</td>
+            </tr>
+        </table>
+    </form>

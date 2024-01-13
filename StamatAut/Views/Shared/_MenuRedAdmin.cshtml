@@ -1,0 +1,514 @@
+﻿@model StamatAut.Models.Redaktor.AdminModel
+@{
+    ViewBag.Title = "_MenuRed";
+    <script src="@Url.Content("~/Scripts/hidden.text.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" />
+}
+<div class="textClass">
+
+    <table>
+        @switch (Model.CurrentLink)
+        {
+            case "Culture":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickCulture">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickCulture">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Culture)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickCulture">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickCulture">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Disease":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Значение")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickDisease">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickDisease">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="Value" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Disease)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickDisease">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <td><input type="text" name="Value" value="@v.Value" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickDisease">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Value.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Pest":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Значение")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickPest">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickPest">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="Value" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Pest)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickPest">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <td><input type="text" name="Value" value="@v.Value" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickPest">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Value.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Stability":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Значение")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickStability">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickStability">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="Value" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Stabil)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickStability">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" /></td>
+                                    <td><input type="text" name="Value" value="@v.Value" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickStability">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.Value.ToString())</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Soil":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Климатическая зона")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickSoil">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickSoil">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    for (var i = 0; i < Model.Soil.Count(); i++)
+                    {
+                        var v = Model.Soil[i];
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickSoil">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" style="width: 920px;" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>
+                                        <select name="Zone">
+                                            @foreach (var t in Model.Climat)
+                                            {
+                                                if (t.Name == Model.Clim[i])
+                                                {
+                                                    <option selected>@t.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option>@t.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="cancelBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickSoil">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(Model.Clim[i])</td>
+                                    <td width="90">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "Climat":
+                {
+                    <tr>
+                        <td>@Html.Label("Название")</td>
+                        <td>@Html.Label("Сумма температур ВП 5-10 градусов")</td>
+                        <td>@Html.Label("Сумма температур ВП 10-12 градусов")</td>
+                        <td>@Html.Label("Количество осадков")</td>
+                        <td>@Html.Label("Количество осадков июня")</td>
+                        <td>@Html.Label("Дата начала ВП")</td>
+                        <td>@Html.Label("Дата окончания ВП")</td>
+                        <td>@Html.Label("Коэффициент увлажнения")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickZone">
+                                <input type="submit" class="addTkrBtn" name="Action" value="Add" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "Add")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickZone">
+                            <tr>
+                                <td><input type="text" name="Name" value="" /></td>
+                                <td><input type="text" name="STVPer_5_10" value="" /></td>
+                                <td><input type="text" name="STVPer_10_12" value="" /></td>
+                                <td><input type="text" name="KOsS" value="" /></td>
+                                <td><input type="text" name="KOsJune" value="" /></td>
+                                <td><input type="text" name="DataBeg" value="" /></td>
+                                <td><input type="text" name="DataEnd" value="" /></td>
+                                <td><input type="text" name="KoefUvl" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAdd" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var v in Model.Climat)
+                    {
+                        if (v.Editable)
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickZone">
+                                <tr>
+                                    <td><input type="text" name="Name" value="@v.Name" size="18" /></td>
+                                    <td><input type="text" name="STVPer_5_10" value="@v.SummTempVegPer_5_10" size="18" /></td>
+                                    <td><input type="text" name="STVPer_10_12" value="@v.SummTempVegPer_10_12" size="18" /></td>
+                                    <td><input type="text" name="KOsS" value="@v.KolOsS" size="5" /></td>
+                                    <td><input type="text" name="KOsJune" value="@v.KolOsadkovJune" size="8" /></td>
+                                    <td><input type="text" name="DataBeg" value="@v.DataBeg" size="5" /></td>
+                                    <td><input type="text" name="DataEnd" value="@v.DataEnd" size="5" /></td>
+                                    <td><input type="text" name="KoefUvl" value="@v.KoefUvl" size="5" /></td>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td width="100">
+                                        <input type="submit" class="saveBtn" name="Action" value="Ok" title="Сохранить" />
+                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Redaktor/ButtonClickZone">
+                                <tr>
+                                    <input type="hidden" name="Id" value="@v.Id" />
+                                    <td>@Html.Label(v.Name)</td>
+                                    <td>@Html.Label(v.SummTempVegPer_5_10)</td>
+                                    <td>@Html.Label(v.SummTempVegPer_10_12)</td>
+                                    <td>@Html.Label(v.KolOsS)</td>
+                                    <td>@Html.Label(v.KolOsadkovJune)</td>
+                                    <td>@Html.Label(v.DataBeg)</td>
+                                    <td>@Html.Label(v.DataEnd)</td>
+                                    <td>@Html.Label(v.KoefUvl)</td>
+                                    <td width="100">
+                                        <input type="submit" class="editTKRBtn" name="Action" value="Edit" title="Редактировать" />
+                                        <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                    </td>
+                                </tr>
+                            </form>
+                        }
+                    }
+                }
+                break;
+            case "TehOp":
+                {
+                    <tr>
+                        <td>@Html.Label("Название группы технологических операций")</td>
+                        <td>
+                            <form method="post" action="/Redaktor/ButtonClickTehOp">
+                                <input type="submit" class="addTkrBtn" name="Action" value="AddGroupTO" title="Добавить" />
+                            </form>
+                        </td>
+                    </tr>
+                    if (Model.Action == "AddGroupTO")
+                    {
+                        <form method="post" action="/Redaktor/ButtonClickTehOp">
+                            <tr>
+                                <td ><input type="text"  name="Name" value="" /></td>
+                                <td width="100">
+                                    <input type="submit" class="saveBtn" name="Action" value="OkAddGroup" title="Сохранить" />
+                                    <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                </td>
+                            </tr>
+                        </form>
+                    }
+                    foreach (var group in Model.TechOperations)
+                    {
+                        if(group.EditableGroup)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    <tr>
+                        <td colspan="8">
+                            <div class="main inline">
+                                <div class="ColAll">
+                                    <div class="demo">
+
+                                        @* @if (Model.Action == "AddGroupTO")
+                                        {
+                                            <form method="post" action="/Redaktor/ButtonClickTehOp" >
+
+                                                <tr>
+                                                    <td><input type="text" name="Name" value="" /></td>
+                                                    <td width="100">
+                                                        <input type="submit" class="saveBtn" name="Action" value="OkAddGroup" title="Сохранить" />
+                                                        <input type="submit" class="delBtn" name="Action" value="Cancel" title="Отмена" />
+                                                    </td>
+                                                </tr>
+                                            </form>
+                                        }*@
+                                        @for (int ii = 0; ii < Model.TechOperations.Count; ii++)
+                                        {
+                                            var w = Model.TechOperations[ii];
+                                            <input class="hide" id="@w.OperationGroupNameNumber" name="@w.OperationGroupNameNumber" value="@w.OperationGroupNameNumber" type="checkbox">
+                                            <label id="l_@w.OperationGroupNameNumber" for="@w.OperationGroupNameNumber">@w.OperationGroupName</label>
+                                            <div>
+                                                @for (int j = 0; j < w.OperationSubGroupNames.Count(); j++)
+                                                {
+                                                    <input class="hide" id="@w.OperationSubGroupNumbers[j]" type="checkbox">
+                                                    <label id="l_@w.OperationSubGroupNumbers[j]" for="@w.OperationSubGroupNumbers[j]">@w.OperationSubGroupNames[j]</label>
+                                                    for (int k = 0; k < Model.OperationLists.Count; k++)
+                                                    {
+                                                        var u = Model.OperationLists[k];
+                                                        if (u.OperationGroupName == w.OperationGroupNameNumber && u.OperationGroupNameNumber == w.OperationSubGroupNumbers[j])
+                                                        {
+                                                            <div>
+                                                                <table>
+                                                                    @for (int l = 0; l < u.OperationSubGroupNames.Count; l++)
+                                                                    {
+                                                                        <tr>
+                                                                            <td><input type="hidden" name="Id" value="@u.OperationSubGroupNumbers[l]" /></td>
+                                                                            <td>@Html.Label(u.OperationSubGroupNames[l])</td>
+                                                                            <td width="100">
+                                                                                <input type="submit" class="editTehOpBtn" name="Action" value="Edit" title="Редактировать" />
+                                                                                <input type="submit" class="delBtn" name="Action" value="Delete" title="Удалить" />
+                                                                            </td>
+                                                                        </tr>
+                                                                        //  }
+                                                                        /* else
+                                                                        {
+                                                                            <tr>
+                                                                                <td><input type="checkbox" id="@superindex" name="AgregateOperation" value="@u.OperationSubGroupNumbers[l]" onclick="FixOperation('@superindex')" /> @u.OperationSubGroupNames[l] &nbsp &nbsp &nbsp   </td>
+                                                                                <td>
+                                                                                    <label hidden id="@superindex-GSML">Затраты ГСМ, руб:</label>
+                                                                                    <input type="hidden" id="@superindex-GSM" name="AgregateOperationGSM" value="" required title="[Целое число],[цифры]" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <label hidden id="@superindex-SRL">Норма выработки, га в ч: </label>
+                                                                                    <input type="hidden" id="@superindex-SR" name="AgregateOperationNorm" value="" required title="[Целое число],[цифры]" />
+                                                                                </td>
+                                                                            </tr>
+                                                                        }*/
+                                                                    }
+                                                                </table>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <br>
+                                                }
+                                                <br />
+                                            </div>
+                                            <br>
+                                        }
+                                        @*Конец блока технологических операций*@
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                }
+                break;
+            case "TehPack":
+                {
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+    </table>
+</div>

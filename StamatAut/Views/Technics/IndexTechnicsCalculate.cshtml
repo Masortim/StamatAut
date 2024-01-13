@@ -1,0 +1,152 @@
+﻿@model StamatAut.Models.Tehnics.TechnicsModel
+@{
+    ViewBag.Title = "SelectTechnics";
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.js")">
+</ script >
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></ script >
+    <script src="@Url.Content("~/Scripts/myscriptIndexTehnologiesFarm.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-more.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-more.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-all.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-3d.src.js")"></script>
+    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-3d.js")"></script>
+    <script>
+        function scr() {
+            displ('noscr');
+        displ('scr');
+    };
+    function calc() {
+            $('img').click(function () {
+                var img = this;
+            });
+        };
+    function displ(ddd) {
+        if (document.getElementById(ddd).style.display == 'none') {
+            document.getElementById(ddd).style.display = 'block'
+        }
+        else {
+            document.getElementById(ddd).style.display = 'none'
+        }
+        };
+    </script>
+    <script src="@Url.Content("~/Scripts/jquery.json-2.2.min.js")" type="text/javascript"></script>
+}
+<div id="t1">
+    <div class="slider">
+        <h1>Подбор техники</h1>
+        <h2>
+            Определение возможности применения различных технологий из имеющихся в БД базовых технологий исходя из уcловий расположения хозяйства
+        </h2>
+        <h3>Порядок работы с разделом:</h3>
+        <h3>
+            Для просмотра результатов подбора технологий для отдельной технологической карты разверните соответствующий пункт меню.
+            Также можно просмотреть более подробную информацию по технологическим операциям.
+        </h3>
+    </div>
+    <h2>Технологиий возделывания культур для подбора техники</h2>
+    <h3 style="text-align:center; display:block;" id="noscr">
+        Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+        Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+    </h3>
+    <div class="main inline">
+        <div class="ColAll">
+            @using (Html.BeginForm("Selector", "Technics", FormMethod.Post))
+            {
+                <div>
+                    <div id="header-w">
+                        @*Это главное меню раздела редактирования БД, здесь задаются названия и порядок отображения пунктов меню*@
+                        <div id="menucontainer1">
+                            @*Названия и порядок пунктов меню: Сорта - Средства защиты - Удобрения - Техника - Сельхозмашины - Агрегаты *@
+                            <ul id="me">
+                                <input type="hidden" name="CurrentLink" value="@Model.CurrentLink" />
+                                <li id="@(Model.CurrentLink == "Culture" ? "select_this" : "")">
+                                    @Html.ActionLink("Потребность техники", "IndexTechnics", "Technics", new RouteValueDictionary(
+                                         new
+                                         {
+                                             metod = "Calculate",
+                                             tkr = Model.Tkr,
+                                             CurrentLink = "Result"
+                                         }), null
+                                         )
+                                </li>
+                                <li id="@(Model.CurrentLink == "Culture" ? "select_this" : "")">
+                                    @Html.ActionLink("Технологическая карта", "IndexTechnics", "Technics", new RouteValueDictionary(
+                                         new
+                                         {
+                                             metod = "Calculate",
+                                             tkr = Model.Tkr,
+                                             CurrentLink = "Result2"
+                                         }), null
+                                         )
+                                </li>
+                                <li id="@(Model.CurrentLink == "Chemical" ? "select_this" : "")">
+                                    @Html.ActionLink("Сводные затраты", "IndexTechnics", "Technics", new RouteValueDictionary(
+                                         new
+                                         {
+                                             metod = "Calculate",
+                                             tkr = Model.Tkr,
+                                             CurrentLink = "Econom"
+                                         }), null
+                                         )
+                                </li>
+                                <li id="@(Model.CurrentLink == "Fertilizer" ? "select_this" : "")">
+                                    @Html.ActionLink("Загрузка техники", "IndexTechnics", "Technics", new RouteValueDictionary(
+                                         new
+                                         {
+                                             metod = "Calculate",
+                                             tkr = Model.Tkr,
+                                             CurrentLink = "Pic"
+                                         }), null
+                                         )
+                                </li>
+                                <li id="@(Model.CurrentLink == "Fuels" ? "select_this" : "")">
+                                    @Html.ActionLink("Календарный график", "IndexTechnics", "Technics", new RouteValueDictionary(
+                                   new
+                                   {
+                                       metod = "Calculate",
+                                       tkr = Model.Tkr,
+                                       CurrentLink = "GantTO"
+                                   }), null
+                                         )
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div>
+                @if (Model.CurrentLink != "")
+                {
+                    <table>
+                        <tr>
+                            <td>@Html.Partial("_MenuTechnics", Model)</td>
+                        </tr>
+                    </table>
+                }
+                else
+                {
+                    <table>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+        scr();
+</script>
+
+
+

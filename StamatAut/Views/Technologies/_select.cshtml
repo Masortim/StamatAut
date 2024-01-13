@@ -1,0 +1,120 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.SelectModels
+<div id="tag">
+
+    @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))//Указать метод для обработки событий
+    {
+        <fieldset>
+            <input type="hidden" name="idWA" value="@Model.WorkAreas.Id" />
+            <input type="hidden" name="years" value="@Model.Tkr.Year" />
+            <table>
+                <caption>Выберите необходимую защиту посевов от болезней и вредителей для указанного участка </caption>
+
+                <tr>
+                    <td>Защита от вредителей</td>
+                    <td>
+                        @foreach (var pv in Model.PestsVat)
+                        {
+                            if (Model.Pest != null)
+                            {
+                                if (Model.Pest.Where(p => p.Name == pv.Name).Count() > 0)
+                                {
+                                    <h4>
+                                        <input type="checkbox" id="selectPest" name="selectPests" value="@pv.Name" checked />@pv.Name
+                                    </h4>
+                                }
+                                else
+                                {
+                                    <h4>
+                                        <input type="checkbox" id="selectPest" name="selectPests" value="@pv.Name" />@pv.Name
+                                    </h4>
+                                }
+
+                            }
+                            else
+                            {
+                                <h4>
+                                    <input type="checkbox" id="selectPest" name="selectPests" value="@pv.Name" />@pv.Name
+                                </h4>
+                            }
+
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Защита от болезней</td>
+                    <td>
+                        @foreach (var dv in Model.DiseaseVal)
+                        {
+                            if (Model.Disease != null)
+                            {
+                                if (Model.Disease.Where(d => d.Name == dv.Name).Count() > 0)
+                                {
+                                    <h4>
+                                        <input type="checkbox" id="selectDisease" name="selectDiseases" value="@dv.Name" checked />@dv.Name
+                                    </h4>
+                                }
+                                else
+                                {
+                                    <h4>
+                                        <input type="checkbox" id="selectDisease" name="selectDiseases" value="@dv.Name" />@dv.Name
+                                    </h4>
+                                }
+                            }
+                            else
+                            {
+                                <h4>
+                                    <input type="checkbox" id="selectDisease" name="selectDiseases" value="@dv.Name" />@dv.Name
+                                </h4>
+                            }
+
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Защита от Сорняков</td>
+                    <td>
+                        <h4>
+                            Пока нет
+                        </h4>
+
+
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Внесение удобрений</td>
+                    <td>
+                        @foreach (var wa in Model.FertilizersVal)
+                        {
+                            <h4>
+                                <input type="checkbox" id="selectFert" name="selectFerts" value="@wa.Name" />@wa.Name
+                            </h4>
+                        }
+
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Выбраны участки общей площадью: </td>
+                    <td>
+                        <input type="text" name="AllSguare" id="allSguare" value='0' />
+                    </td>
+
+                </tr>
+            </table>
+            <form>
+
+                <div id="okClose">
+                    <input type="submit" class="okBtn" name="Action" value="OkPestsAdd" title="Сохранить" formnovalidate />
+
+                </div>
+
+            </form>
+        </fieldset>
+    }
+</div>

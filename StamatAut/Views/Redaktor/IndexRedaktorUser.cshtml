@@ -1,0 +1,176 @@
+﻿@model StamatAut.Models.Redaktor.UserModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "SelectTechnics";
+}
+<script>
+    function scr() {
+        displ('noscr');
+        displ('scr');
+    };
+    function calc() {
+        $('img').click(function () {
+            var img = this;
+        });
+    };
+    function displ(ddd) {
+        if (document.getElementById(ddd).style.display == 'none') {
+            document.getElementById(ddd).style.display = 'block'
+        }
+        else {
+            document.getElementById(ddd).style.display = 'none'
+        }
+    };
+</script>
+<script src="@Url.Content("~/Scripts/jquery.json-2.2.min.js")" type="text/javascript"></script>
+
+<div class="slider">
+    <h1>База данных</h1>
+    <p class="lead">Формирование БД по данным хозяйства</p>
+    <h3>Порядок работы с разделом:</h3>
+    <h3>Для добавления, удаления или редактирования данных выберите необходимый пункт меню</h3>
+</div>
+<h2>Редактор</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+@using (Html.BeginForm("Selector", "Redaktor", FormMethod.Post))
+{
+    <div>
+        <div id="header-w">
+            @*Это главное меню раздела редактирования БД, здесь задаются названия и порядок отображения пунктов меню*@
+            <div id="menucontainer1">
+                @*Названия и порядок пунктов меню: Сорта - Средства защиты - Удобрения - Техника - Сельхозмашины - Агрегаты *@
+                <ul id="me">
+                    <input type="hidden" name="CurrentLink" value="@Model.CurrentLink" />
+                    <li id="@(Model.CurrentLink == "Culture" ? "select_this" : "")">
+                        @Html.ActionLink("Сорта", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Culture"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Chemical" ? "select_this" : "")">
+                        @Html.ActionLink("Средства защиты", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Chemical"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Fertilizer" ? "select_this" : "")">
+                        @Html.ActionLink("Удобрения", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Fertilizer"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Fuels" ? "select_this" : "")">
+                        @Html.ActionLink("Топливо", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Fuels"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Machinery" ? "select_this" : "")">
+                        @Html.ActionLink("Техника", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Machinery"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Trailers" ? "select_this" : "")">
+                        @Html.ActionLink("Сельхозмашины", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Trailers"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Agregates" ? "select_this" : "")">
+                        @Html.ActionLink("Агрегаты", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Agregates"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Mechanics" ? "select_this" : "")">
+                        @Html.ActionLink("Механизаторы", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Mechanics"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Medicine" ? "select_this" : "")">
+                        @Html.ActionLink("Больничные", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Medicine"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "Breaking" ? "select_this" : "")">
+                        @Html.ActionLink("Поломки", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "Breaking"
+                             }), null
+                             )
+                    </li>
+                    <li id="@(Model.CurrentLink == "StakeMech" ? "select_this" : "")">
+                        @Html.ActionLink("Ставки Механизаторов", "Selector", "Redaktor", new RouteValueDictionary(
+                             new
+                             {
+                                 CurrentLink = "StakeMech"
+                             }), null
+                             )
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @if (Model.CurrentLink != "")
+    {
+        <table>
+            <tr>
+                <td>@Html.Partial("_MenuRed", Model)</td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</div>
+<form>
+    <div style="position: relative; ">
+        <input style="position: absolute;right: 10px;top: 5px;" type="submit" class="okBtn" name="Action" value="Ok" title="Продолжить" />
+    </div>
+</form>
+
+
+
+<script>
+    scr();
+</script>
+
+

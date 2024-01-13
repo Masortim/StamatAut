@@ -1,0 +1,218 @@
+﻿@model StamatAut.Models.Technologies.TechnologiesNewFarmModels
+@{
+    ViewBag.Title = "SelectTechnologies";
+}
+@{
+    <script>
+        function scr() {
+            displ('noscr');
+            displ('scr');
+
+        };
+
+        function displ(ddd) {
+            if (document.getElementById(ddd).style.display == 'none') {
+                document.getElementById(ddd).style.display = 'block';
+            }
+            else {
+                document.getElementById(ddd).style.display = 'none';
+            }
+            allOff(@Model.countWorkArea);
+        };
+
+        function allOn(col) {
+            
+            for (var i = 0; i < col; i++) {
+                var qq = 'idListArea ' + i.toString();
+                ell = document.getElementById(qq);
+                ell.style.backgroundColor = 'darkseagreen';
+            }
+        };
+
+        function allOff(col) {
+
+            for (var i = 0; i < col; i++) {
+                var qq = 'idListArea ' + i.toString();
+                ell = document.getElementById(qq);
+                ell.style.backgroundColor = 'gainsboro';
+            }
+        };
+
+        function toggleButtonColor(el) {
+            el.style.backgroundColor = el.style.backgroundColor == 'gainsboro' ? 'darkseagreen' : 'gainsboro';
+        };
+
+        function calc(idList, id, idFarm) {
+            //изменение цвета иконки
+            q = 'idListArea ' + idList;
+            var el = document.getElementById(q);
+            allOff(@Model.countWorkArea);
+            toggleButtonColor(el);
+
+
+            $('#idList').val(id);
+
+            var obj = new Object();
+            obj.idFarm = idFarm;
+            obj.IdWorkArea = id;
+            var jsonObj = JSON.stringify(obj);
+
+            $.ajax(
+                {
+                    type: 'get',
+                    url: '/Technologies/_newWArea',
+                    data: obj,
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (html) {
+                        window
+                        $('#tag').remove();
+                        $('.Col2').append(html);
+                    }
+                });
+
+        }
+        function zonaCh() {            
+            var y = $('#zonaChange').val();
+            var obj = new Object();
+            obj.zona = y;
+
+            $.ajax(
+                {
+                    type: 'get',
+                    url: '/Technologies/changeZona',
+                    data: obj,
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (html) {
+                        $('#tag3').remove();
+                        $('.zona').append(html);                       
+                    }
+                });
+        };
+
+    </script>
+}
+
+
+<div class="slider">
+    <h1>Подбор технологий</h1>
+    <h2>
+        Определение возможности применения различных технологий из имеющихся в БД базовых технологий исходя из узловий расположения хозяйства
+    </h2>
+    <h3>Порядок работы с разделом:</h3>
+    <h3>Краткая инструкция</h3>
+</div>
+<h2>Подбор технологий</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+
+
+@if (Model.countWorkArea == 0)
+{
+<h3>
+    Для начала работы с программой необходимо ввести информацию о хозяйстве.
+</h3>
+         
+    using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+    {
+        <fieldset>   
+    <table>
+        <tr>
+            <td style="width: 600px; text-align: right;">@Html.Label("Зона расположения хозяйства")</td>
+            <td style="padding-left:10px;">
+                <select id="zonaChange" name="zona" onchange="zonaCh()">
+                    @foreach (var i in Model.ClimateVal)
+                    {
+                        <option>@i</option>
+                    }
+                </select>
+            </td>
+        </tr>
+    </table>
+    <div class="zona">
+        <div id="tag3">
+            @Html.Partial("_zona", new StamatAut.Models.Technologies.ZonaModels(Model.ClimateVal.ElementAt(0)))
+        </div>
+    </div>
+    <table>
+
+        <tr>
+            <td style="width: 600px; text-align: right;">
+                @Html.Label("Количество рабочих участков")
+            </td>
+            <td style="padding-left:10px;">
+                <input type="text" name="ColWorkArea" value="" required/>
+            </td>
+        </tr>
+    </table>
+    <div style="position: relative; ">
+        <input style="position: absolute;right: 10px;top: 5px;" type="submit" class="okBtn" name="Action" value="Ok" title="Продолжить" />
+    </div>
+
+    </fieldset>
+        }
+        }
+        else
+        {
+        <input type="hidden" name="idListWorkArea" id="idList" value="idListWorkArea" />
+
+
+        <p id="result"></p>
+
+        <div class="main inline">
+            <div class="Col1">
+                <table id="tableId">
+                    @for (int i = 0; i < Model.countWorkArea; i++)
+                    {
+                        <tr>
+                            @if (i < Model.countWorkArea)
+                            {
+                                <td class="workAreaInfo" id="idListArea @i" value="@i" onclick="calc(@i, @Model.wAreas.ElementAt(i).Id,  '@Model.idFarm')">
+                                    @Html.Label("Номер участка: " + Model.wAreas.ElementAt(i).Name)
+                                    @Html.Label("Площадь: " + Model.wAreas.ElementAt(i).Square)
+                                </td>
+                                i = i + 1;
+                            }
+                            @if (i < Model.countWorkArea)
+                            {
+                                <td class="workAreaInfo" id="idListArea @i" value="@i" onclick="calc(@i, @Model.wAreas.ElementAt(i).Id, '@Model.idFarm')">
+                                    @Html.Label("Номер участка: " + Model.wAreas.ElementAt(i).Name)
+                                    @Html.Label("Площадь: " + Model.wAreas.ElementAt(i).Square)
+                                </td>
+                                i = i + 1;
+                            }
+                            @if (i < Model.countWorkArea)
+                            {
+                                <td class="workAreaInfo" id="idListArea @i" value="@i" onclick="calc(@i, @Model.wAreas.ElementAt(i).Id, '@Model.idFarm')">
+                                    @Html.Label("Номер участка: " + Model.wAreas.ElementAt(i).Name)
+                                    @Html.Label("Площадь: " + Model.wAreas.ElementAt(i).Square)
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="Col2">
+                @Html.Partial("_newWArea", new StamatAut.Models.Technologies.NewWorkAreaModels())
+            </div>
+
+        </div>
+        using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+        {
+        <div style="position: relative; ">
+            <input style="position: absolute;right: 10px;top: 5px;" type="submit" class="okBtn" name="Action" value="Next" title="Продолжить" />
+        </div>
+
+        }
+
+        }
+        <script type="text/javascript">
+        scr();
+            allOn(@Model.countWorkArea);
+        myFunction();
+
+        </script>
+
+
+

@@ -1,0 +1,45 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.SelectItnensificModels
+<div id="tag">
+
+    @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))//Указать метод для обработки событий
+    {
+        
+            <fieldset>
+                <table>
+                    <caption>Выберите уровень интенсификации и укажите участки </caption>
+                    
+                    <tr>
+                        <td>Уровень интенсификации</td>
+                        <td>
+                            <select name="predsh" required>
+                                <option></option>
+                                @foreach (var i in Model.intensificalionVal)
+                                {
+                                    <option>@i</option>
+                                }
+                            </select>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Выбраны участки общей площадью: </td>
+                        <td>
+                            <input type="text" name="AllwAreas" id="selWAreas" value='0' />
+                            <input type="text" name="AllSguare" id="allSguare" value='0' />
+                        </td>
+
+                    </tr>
+                </table>
+                <form>
+                    
+                    <div id="okClose">
+                        <input type="submit" class="okBtn" name="Action" value="OkIntensAdd" title="Сохранить" formnovalidate />
+                      
+                    </div>
+
+                </form>
+            </fieldset>
+        
+    }
+</div>

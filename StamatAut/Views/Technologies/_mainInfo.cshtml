@@ -1,0 +1,34 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.MainInfoModels
+<div id="tag">
+
+    @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+    {
+        
+            <fieldset>
+                <table>
+                    <tr>
+                        <td>Общая площадь посева</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="text" name="numWorkArea" value='@Model.countCult' />
+                        </td>
+
+                    </tr>
+                   
+                </table>
+                <form>
+                   
+                    <div id="okClose">
+                        <input type="submit" class="okBtn" name="Action" value="OkWorkAreaAdd" title="Сохранить" formnovalidate />
+                        <input type="submit" class="delBtn" name="Action" value="Delite" title="Отменить" />
+                    </div>
+
+                </form>
+            </fieldset>
+                     
+      
+    }
+</div>

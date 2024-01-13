@@ -1,0 +1,111 @@
+﻿@{ Layout = null; }
+@model StamatAut.Models.Technologies.NewWorkAreaModels
+<div id="tag">
+
+    @using (Html.BeginForm("Index", "Technologies", FormMethod.Post))
+    {
+        if (Model.status)
+        {
+            <fieldset>
+                <table>
+                    <caption>Информация о рабочем участке</caption>
+                    <tr>
+                        <td>Номер участка</td>
+                        <td>
+                            <input type="text" name="numWorkArea" value='@Model.NumWorkArea' />
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Длинна участка</td>
+                        <td>
+                            <input type="text" name="longWorkArea" value='@Model.LongWorkArea' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ширина участка</td>
+                        <td>
+                            <input type="text" name="widthWorkArea" value='@Model.WidthWorkArea' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Площадь участка</td>
+                        <td>
+                            <input type="text" name="square" value='@Model.Square' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Процент колков</td>
+                        <td>
+                            <input type="text" name="kolokPercent" value='@Model.PersKolk' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Угол наклона участка</td>
+                        <td>
+                            <input type="text" name="ugolNakl" value='@Model.UgolNakl' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Удаленность от хозяйства</td>
+                        <td>
+                            <input type="text" name="podvoz" value='@Model.Podvoz' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Агроэкологический тип земель
+                        </td>
+                        <td style="width:400px;">
+                            @foreach (var i in Model.PochviVal)
+                            {
+                                if (i.Name == Model.Pochvi)
+                                {
+                            <h5 >
+                                <input type="checkbox" id="soile" name="pochvi" value="@i.Name" checked />@i.Name
+                            </h5>
+
+                                }
+                                else
+                                {
+                            <h5  >
+                                <input type="checkbox" id="soile" name="pochvi" value="@i.Name" />@i.Name
+                            </h5>
+
+                                }
+                            }                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <form>
+                                <div style="position:relative; height:40px;">
+                                    <input type="hidden" name="idListWorkArea" id="idList" value="@Model.IdWorkArea" />
+
+                                    <input style="position: absolute; left: 270px; top:1px;" type="submit" class="okBtn" name="Action" value="OkWorkAreaAdd" title="Сохранить изменения" formnovalidate />
+                                    <input style="position: absolute; left: 225px; top:1px;" type="submit" class="delBtn" name="Action" value="Delite" title="Удалить участок" />
+
+                                </div>
+
+
+                            </form>
+                        </td>
+
+                    </tr>
+                </table>
+                
+            </fieldset>
+        }
+        else
+        {
+            <fieldset>
+                <table style="width:550px;">
+                    <tbody style="text-align :center;" >
+                        Выберите участок для редактирования информации
+                    </tbody>                   
+                </table>
+            </fieldset>                    
+        }
+    }
+</div>

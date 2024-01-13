@@ -1,0 +1,96 @@
+﻿@model StamatAut.Models.Tehnics.TechnicsModel
+@{
+    ViewBag.Title = "SelectTechnics"; 
+    <link href="@Url.Content("~/Content/StileHidden.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/myscriptIndexTehnologiesFarm.js")" type="text/javascript"></script>   
+}
+
+<div class="slider">
+    <h1>Подбор техники</h1>
+    <p class="lead">Подбор техники исходя из конфигурации полей и ширины захвата машинно-тракторного агрегата</p>
+</div>
+<h2>Подбор техники</h2>
+<h3 style="text-align:center; display:block;" id="noscr">
+    Для работы с программой необходимо разрешить выполнение скриптов в браузере.
+    Для этого зайдите в настройки браузера и поставьте галочку в поле "Разрешить выполнение JavaScript"
+</h3>
+
+<h3>
+    Для начала подбора техники выберите варианты технологий для расчетного периода
+</h3>
+
+<div class="main inline">
+    <div class="ColAll">
+        @using (Html.BeginForm("Index", "Technics", FormMethod.Post))
+        {
+            <div>
+                @foreach (var ta in Model.GroupTA)
+                {
+                    <table id="tableAdd">
+                        <caption>
+                            <input type="checkbox" name="selectTechPaket" value="@ta.Key" />
+                            <label>@ta.Key</label>
+                        </caption>
+                    </table>
+                    foreach (var val in ta.Value)
+                    {
+                        <table>
+                            <tr>
+                                <td>Рабочие участки</td>
+                                <td>@val.GroupWA</td>
+                            </tr>
+                        </table>
+                        <div class="demo">
+
+                            <fieldset>
+                                <legend></legend>
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td>Наименование технологической операции</td>
+                                            <td>Дата начала</td>
+                                            <td>Дата окончания</td>
+                                            <td>Процент выполнения операции</td>
+                                        </tr>
+                                        @for (int i = 0; i < val.TechPaket.TechP[0].Operations.Count(); i++)
+                                        {
+                                            var year= Model.TechKart.First(p=>p.IdTKR==val.IdTKR).
+                                            <input type="hidden" name="selectTechPaket" value="@val.IdTKR-@val.GroupWA-@val.TechPaket.TechP[0].Operations[i].IdOperation" />
+                                            <input class="hide" id="@val.IdTKR-@val.GroupWA--@i" type="checkbox">
+                                            <label for="@val.IdTKR-@val.GroupWA--@i">@@val.GroupWA-@val.TechPaket.TechP[0].Operations[i].Name</label>
+                                            <div>
+
+                                                <tr>
+                                                    <td>val.TechPaket.TechP[0].Operations[i].Name</td>
+                                                    <td><input type="date" id="start_@val.IdTKR-@val.GroupWA-@i" name="dateB" value="@val.TechPaket.TechP[0].Operations[i].d" min="@year-01-01" max="@year-12-31" onchange="dateend('@str')"></td>
+                                                    @*<td><input type="date" id="start_@val.IdTKR-@val.GroupWA-@i" name="dateB" value="@year-05-22" min="@year-01-01" max="@year-12-31" onchange="dateend('@str')"></td>
+                    <td><input type="date" id="end_@val.IdTKR-@val.GroupWA-@i" name="dateE" value="2022-07-22" min="2018-01-01" max="2022-12-31"></td>
+                    <td><input type="text" name="persentTO" value="100"></td>*@
+                                                </tr>
+
+                                            </div>
+                                            <br />
+                                            <br />
+                                        }
+                                    </table>
+</div>
+                                <br />
+                                <br />
+                            </fieldset>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div id="okClose">
+                <input type="submit" class="okBtn" name="Action" value="SaveTehKart" title="Сохранить" />
+            </div>
+            <h1 style="height: 20px;"></h1>
+        }
+    </div>
+</div>
+<script>
+    scr();
+</script>
+
+
